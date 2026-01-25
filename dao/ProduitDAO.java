@@ -3,6 +3,7 @@ package com.restaurant.dao;
 import com.restaurant.entités.Produit;
 import com.restaurant.controllers.DBConnection;
 import java.sql.*;
+import java.util.List;
 
 public class ProduitDAO {
     
@@ -34,5 +35,9 @@ public class ProduitDAO {
         } catch (SQLException e) {
             return null;
         }
+    }
+
+    public List<Produit> listerTous() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

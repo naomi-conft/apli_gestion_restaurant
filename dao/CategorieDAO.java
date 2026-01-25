@@ -11,7 +11,7 @@ public class CategorieDAO {
     public boolean ajouter(Categorie cat) {
         String sql = "INSERT INTO Categorie (libelle) VALUES (?)";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
+            PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setString(1, cat.getLibelle());
             return pst.executeUpdate() > 0;
         } catch (SQLException e) {
