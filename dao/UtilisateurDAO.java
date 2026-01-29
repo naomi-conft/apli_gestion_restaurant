@@ -1,6 +1,6 @@
 package com.restaurant.dao;
 
-import com.restaurant.entite.Utilisateurs;
+import com.restaurant.entités.Utilisateurs;
 import com.restaurant.controllers.DBConnection;
 import java.sql.*;
 

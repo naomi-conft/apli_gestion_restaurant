@@ -1,6 +1,6 @@
 package com.restaurant.dao;
 
-import com.restaurant.entite.Categorie;
+import com.restaurant.entités.Categorie;
 import com.restaurant.controllers.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;

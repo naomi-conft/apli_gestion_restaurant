@@ -1,7 +1,7 @@
 package com.restaurant.dao;
 
-import com.restaurant.entite.MouvementStock;
-import com.restaurant.entite.Produit;
+import com.restaurant.entités.MouvementStock;
+import com.restaurant.entités.Produit;
 import com.restaurant.controllers.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;

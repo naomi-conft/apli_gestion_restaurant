@@ -1,185 +1,234 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.restaurant.views;
 
+import com.restaurant.dao.MouvementStockDAO;
+import com.restaurant.dao.ProduitDAO;
+import com.restaurant.entités.Produit;
+import com.restaurant.entités.MouvementStock;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
 
-
-
-
-   
-
-public class StockView extends javax.swing.JFrame {
-     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(StockView.class.getName());
-
-    private DefaultTableModel modelStock;
+/**
+ * Gestion du stock - Code source pur
+ * @author DELL
+ */
+public class StockView extends JFrame {
+    
+    // Composants
+    private JTable tableMouvements;
+    private DefaultTableModel modelMouvements;
+    private JComboBox<Produit> cmbProduit;
+    private JComboBox<String> cmbType;
+    private JTextField txtQuantite;
+    private JTextField txtMotif;
+    private JButton btnEnregistrer;
+    private JButton btnRafraichir;
+    private JButton btnAlertes;
+    private JButton btnFermer;
+    
+    // DAO
+    private MouvementStockDAO mouvementDAO;
+    private ProduitDAO produitDAO;
     
     public StockView() {
+        mouvementDAO = new MouvementStockDAO();
+        produitDAO = new ProduitDAO();
         initComponents();
-        setTitle("Gestion du stock");
-        setLocationRelativeTo(null);
-        initialiserStock();
+        chargerProduits();
+        chargerMouvements();
     }
-
-    private void initialiserStock() {
-        modelStock = new DefaultTableModel(
-            new Object[]{"ID", "Produit", "Catégorie", "Stock"}, 0
-        );
-
-        tableStock.setModel(modelStock);
-
-        // Données de test
-        modelStock.addRow(new Object[]{1, "Pizza", "Plat", 15});
-        modelStock.addRow(new Object[]{2, "Burger", "Plat", 10});
-        modelStock.addRow(new Object[]{3, "Jus", "Boisson", 25});
-    }
-    private void modifierStock(boolean entree) {
-        int row = tableStock.getSelectedRow();
-
-        if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Sélectionnez un produit");
-            return;
-        }
-
-        int quantite;
-        try {
-            quantite = Integer.parseInt(txtQuantite.getText());
-            if (quantite <= 0) throw new Exception();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Quantité invalide");
-            return;
-        }
-
-        int stockActuel = (int) modelStock.getValueAt(row, 3);
-        int nouveauStock = entree ? stockActuel + quantite : stockActuel - quantite;
-
-        if (nouveauStock < 2) {
-            JOptionPane.showMessageDialog(this, "Seuil attends!");
-            return;
-        }
-
-        modelStock.setValueAt(nouveauStock, row, 3);
-        txtQuantite.setText("");
-    }
-
-
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    
     private void initComponents() {
-
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tableStock = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        txtQuantite = new javax.swing.JTextField();
-        btnEntrer = new javax.swing.JButton();
-        btnSortie = new javax.swing.JButton();
-        btnFermer = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        tableStock.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "ID", "Produit", "Categorie", "Stock"
+        // Configuration de la fenêtre
+        setTitle("Gestion du Stock");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(900, 600);
+        setLocationRelativeTo(null);
+        
+        // Panel principal
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
+        // Panel formulaire (haut)
+        JPanel panelFormulaire = new JPanel(new GridBagLayout());
+        panelFormulaire.setBorder(BorderFactory.createTitledBorder("Nouveau Mouvement"));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        
+        // Produit
+        gbc.gridx = 0; gbc.gridy = 0;
+        panelFormulaire.add(new JLabel("Produit :"), gbc);
+        gbc.gridx = 1;
+        cmbProduit = new JComboBox<>();
+        cmbProduit.setPreferredSize(new Dimension(200, 25));
+        panelFormulaire.add(cmbProduit, gbc);
+        
+        // Type
+        gbc.gridx = 2; gbc.gridy = 0;
+        panelFormulaire.add(new JLabel("Type :"), gbc);
+        gbc.gridx = 3;
+        cmbType = new JComboBox<>(new String[]{"ENTREE", "SORTIE"});
+        panelFormulaire.add(cmbType, gbc);
+        
+        // Quantité
+        gbc.gridx = 0; gbc.gridy = 1;
+        panelFormulaire.add(new JLabel("Quantité :"), gbc);
+        gbc.gridx = 1;
+        txtQuantite = new JTextField(10);
+        panelFormulaire.add(txtQuantite, gbc);
+        
+        // Motif
+        gbc.gridx = 2; gbc.gridy = 1;
+        panelFormulaire.add(new JLabel("Motif :"), gbc);
+        gbc.gridx = 3;
+        txtMotif = new JTextField(15);
+        panelFormulaire.add(txtMotif, gbc);
+        
+        // Bouton enregistrer
+        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridwidth = 4;
+        btnEnregistrer = new JButton("Enregistrer le mouvement");
+        btnEnregistrer.addActionListener(e -> enregistrerMouvement());
+        panelFormulaire.add(btnEnregistrer, gbc);
+        
+        // Panel tableau
+        JPanel panelTableau = new JPanel(new BorderLayout());
+        panelTableau.setBorder(BorderFactory.createTitledBorder("Historique des Mouvements"));
+        
+        modelMouvements = new DefaultTableModel(
+            new String[]{"ID", "Produit", "Type", "Quantité", "Date", "Motif"}, 0
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
-        ));
-        jScrollPane1.setViewportView(tableStock);
-
-        jLabel1.setText("Quantite voulu :");
-
-        btnEntrer.setText("Entrer");
-        btnEntrer.addActionListener(this::btnEntrerActionPerformed);
-
-        btnSortie.setText("Sortie");
-        btnSortie.addActionListener(this::btnSortieActionPerformed);
-
-        btnFermer.setText("Fermer");
-        btnFermer.addActionListener(this::btnFermerActionPerformed);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnSortie)
-                            .addComponent(btnEntrer)
-                            .addComponent(btnFermer))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(33, 33, 33)
-                        .addComponent(btnEntrer)
-                        .addGap(34, 34, 34)
-                        .addComponent(btnSortie)
-                        .addGap(32, 32, 32)
-                        .addComponent(btnFermer)))
-                .addContainerGap(19, Short.MAX_VALUE))
-        );
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void btnEntrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrerActionPerformed
-        // TODO add your handling code here:
-        modifierStock(true);
-    }//GEN-LAST:event_btnEntrerActionPerformed
-
-    private void btnSortieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortieActionPerformed
-        // TODO add your handling code here:
-        modifierStock(false);
-    }//GEN-LAST:event_btnSortieActionPerformed
-
-    private void btnFermerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFermerActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_btnFermerActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        javax.swing.SwingUtilities.invokeLater(() -> {
+        };
+        tableMouvements = new JTable(modelMouvements);
+        JScrollPane scrollPane = new JScrollPane(tableMouvements);
+        panelTableau.add(scrollPane, BorderLayout.CENTER);
+        
+        // Panel boutons
+        JPanel panelBoutons = new JPanel(new FlowLayout());
+        btnRafraichir = new JButton("Rafraîchir");
+        btnRafraichir.addActionListener(e -> chargerMouvements());
+        panelBoutons.add(btnRafraichir);
+        
+        btnAlertes = new JButton("Afficher Alertes");
+        btnAlertes.addActionListener(e -> afficherAlertes());
+        panelBoutons.add(btnAlertes);
+        
+        btnFermer = new JButton("Fermer");
+        btnFermer.addActionListener(e -> dispose());
+        panelBoutons.add(btnFermer);
+        
+        // Assembler
+        mainPanel.add(panelFormulaire, BorderLayout.NORTH);
+        mainPanel.add(panelTableau, BorderLayout.CENTER);
+        mainPanel.add(panelBoutons, BorderLayout.SOUTH);
+        
+        add(mainPanel);
+    }
+    
+    private void chargerProduits() {
+        cmbProduit.removeAllItems();
+        List<Produit> produits = produitDAO.listerTous();
+        for (Produit p : produits) {
+            cmbProduit.addItem(p);
+        }
+    }
+    
+    private void chargerMouvements() {
+        modelMouvements.setRowCount(0);
+        List<MouvementStock> mouvements = mouvementDAO.listerTous();
+        
+        for (MouvementStock m : mouvements) {
+            modelMouvements.addRow(new Object[]{
+                m.getId(),
+                m.getProduit().getNom(),
+                m.getType(),
+                m.getQuantite(),
+                m.getDateMouvement(),
+                m.getMotif()
+            });
+        }
+    }
+    
+    private void enregistrerMouvement() {
+        try {
+            // Validation
+            if (cmbProduit.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(this, "Veuillez sélectionner un produit");
+                return;
+            }
+            
+            if (txtQuantite.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Veuillez saisir une quantité");
+                return;
+            }
+            
+            Produit produit = (Produit) cmbProduit.getSelectedItem();
+            String type = (String) cmbType.getSelectedItem();
+            int quantite = Integer.parseInt(txtQuantite.getText().trim());
+            String motif = txtMotif.getText().trim();
+            
+            if (quantite <= 0) {
+                JOptionPane.showMessageDialog(this, "La quantité doit être > 0");
+                return;
+            }
+            
+            // Enregistrer
+            if (mouvementDAO.enregistrerMouvement(produit.getId(), type, quantite, motif)) {
+                JOptionPane.showMessageDialog(this, 
+                    "Mouvement enregistré avec succès\nLe stock a été mis à jour");
+                chargerMouvements();
+                chargerProduits(); // Recharger pour avoir les stocks à jour
+                viderChamps();
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                    "Erreur lors de l'enregistrement\nVérifiez que le stock est suffisant pour une sortie");
+            }
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Quantité invalide");
+        }
+    }
+    
+    private void afficherAlertes() {
+        List<Produit> alertes = produitDAO.getProduitsEnAlerte();
+        
+        if (alertes.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Aucun produit en alerte\nTous les stocks sont normaux !", 
+                "Information", 
+                JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            StringBuilder message = new StringBuilder("Produits en alerte :\n\n");
+            for (Produit p : alertes) {
+                message.append(String.format("• %s : %d unités (seuil: %d)\n", 
+                    p.getNom(), p.getStockActuel(), p.getSeuilAlerte()));
+            }
+            
+            JOptionPane.showMessageDialog(this, 
+                message.toString(), 
+                "Alerte Stock", 
+                JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    
+    private void viderChamps() {
+        txtQuantite.setText("");
+        txtMotif.setText("");
+        if (cmbProduit.getItemCount() > 0) {
+            cmbProduit.setSelectedIndex(0);
+        }
+        cmbType.setSelectedIndex(0);
+    }
+    
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
             new StockView().setVisible(true);
         });
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEntrer;
-    private javax.swing.JButton btnFermer;
-    private javax.swing.JButton btnSortie;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tableStock;
-    private javax.swing.JTextField txtQuantite;
-    // End of variables declaration//GEN-END:variables
-    }
+}

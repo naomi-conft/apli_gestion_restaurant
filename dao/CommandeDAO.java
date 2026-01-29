@@ -1,7 +1,7 @@
 package com.restaurant.dao;
 
-import com.restaurant.entite.Commande;
-import com.restaurant.entite.LigneCommande;
+import com.restaurant.entités.Commande;
+import com.restaurant.entités.LigneCommande;
 import com.restaurant.controllers.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
