@@ -4,13 +4,13 @@ import java.util.Date;
 public class Commande {
     private int id;
     private Date dateCommande;
-    private String etat; // EN_COURS, VALIDÉE, ANNULÉE
+    
     private double total;
 
-    public Commande(int id, Date dateCommande, String etat) {
+    public Commande(int id, Date dateCommande, double total) {
         this.id = id;
         this.dateCommande = dateCommande;
-        this.etat = etat;
+        
         this.total = 0.0;
     }
     // Ajoutez les Getters/Setters
@@ -18,8 +18,11 @@ public class Commande {
     public void setId(int id) { this.id = id;}
     public Date getdateCommande() { return dateCommande;}
     public void setdateCommande(Date dateCommande) { this.dateCommande = dateCommande ;}
-    public String getEtat() {return etat;}
-    public void setEtat(String etat) { this.etat = etat;}
+    
     public double getTotal() { return total;}
     public void setTotal( double total) { this.total = total;}
+
+    public Object getDateCommande() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

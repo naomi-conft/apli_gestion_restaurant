@@ -3,8 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.restaurant.views;
+import com.restaurant.entite.Categorie;
+import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+
 
 
 /**
@@ -23,17 +27,25 @@ public class ProduitView extends javax.swing.JFrame {
     public ProduitView() {
         initComponents();
         model = new DefaultTableModel(
-            new Object[]{"ID", "Nom", "Prix", "Stock"}, 0
+            new Object[]{"ID", "Nom", "Catégorie", "Prix", "Stock"}, 0
         );
         tableProduits.setModel(model);
         setTitle("Gestion des produits");
         setLocationRelativeTo(null);
         
-        model.addRow(new Object[]{1, "Pizza", 2500, 10});
-        model.addRow(new Object[]{2, "Burger", 2000, 15});
-        model.addRow(new Object[]{3, "Jus", 1000, 20});
+        
+        model.addRow(new Object[]{1, "Pizza","Plats", 2500, 10});
+        model.addRow(new Object[]{2, "Burger","Plats", 2000, 15});
+        model.addRow(new Object[]{3, "Jus","Boissons", 1000, 20});
+        
+        comboCategorie.removeAllItems();
+        comboCategorie.addItem(new Categorie(1, "Boissons"));
+        comboCategorie.addItem(new Categorie(2, "Plats"));
+        comboCategorie.addItem(new Categorie(3, "Desserts"));
 
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -50,6 +62,7 @@ public class ProduitView extends javax.swing.JFrame {
         btnModifier = new javax.swing.JButton();
         btnSupprimer = new javax.swing.JButton();
         btnFermer = new javax.swing.JButton();
+        comboCategorie = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,6 +91,8 @@ public class ProduitView extends javax.swing.JFrame {
         btnFermer.setText("Fermer");
         btnFermer.addActionListener(this::btnFermerActionPerformed);
 
+        comboCategorie.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Produits" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -86,7 +101,9 @@ public class ProduitView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(comboCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(btnAjouter)
@@ -96,13 +113,15 @@ public class ProduitView extends javax.swing.JFrame {
                         .addComponent(btnSupprimer)
                         .addGap(18, 18, 18)
                         .addComponent(btnFermer)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAjouter)
@@ -118,17 +137,33 @@ public class ProduitView extends javax.swing.JFrame {
     private void btnAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterActionPerformed
         // TODO add your handling code here:
         String nom = JOptionPane.showInputDialog(this, "Nom du produit :");
-        String prixStr = JOptionPane.showInputDialog(this, "Prix :");
-        String stockStr = JOptionPane.showInputDialog(this, "Stock :");
+        if (nom == null || nom.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nom obligatoire");
+            return;
+        }
 
-        if (nom == null || prixStr == null || stockStr == null) return;
+        Categorie cat = (Categorie) comboCategorie.getSelectedItem();
 
-        double prix = Double.parseDouble(prixStr);
-        int stock = Integer.parseInt(stockStr);
+        double prix;
+        int stock;
+
+        try {
+            prix = Double.parseDouble(JOptionPane.showInputDialog("Prix :"));
+            stock = Integer.parseInt(JOptionPane.showInputDialog("Stock :"));
+
+            if (prix <= 0 || stock < 0) {
+                JOptionPane.showMessageDialog(this, "Valeurs invalides");
+                return;
+            }
+        } catch (HeadlessException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Saisie incorrecte");
+            return;
+        }
 
         model.addRow(new Object[]{
             model.getRowCount() + 1,
             nom,
+            cat.getLibelle(),
             prix,
             stock
         });
@@ -196,6 +231,7 @@ public class ProduitView extends javax.swing.JFrame {
     private javax.swing.JButton btnFermer;
     private javax.swing.JButton btnModifier;
     private javax.swing.JButton btnSupprimer;
+    private javax.swing.JComboBox comboCategorie;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableProduits;
     // End of variables declaration//GEN-END:variables

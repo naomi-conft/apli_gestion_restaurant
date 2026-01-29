@@ -3,12 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.restaurant.views;
+import javax.swing.table.DefaultTableModel;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author DELL
  */
 public class CommandeView extends javax.swing.JFrame {
+    private javax.swing.table.DefaultTableModel modelCommande;
+    private final double total = 0;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CommandeView.class.getName());
 
@@ -17,6 +25,27 @@ public class CommandeView extends javax.swing.JFrame {
      */
     public CommandeView() {
         initComponents();
+        setTitle("Commande client");
+        setLocationRelativeTo(null);
+        initialiserCommande();
+    }
+
+    private void initialiserCommande() {
+    
+    LocalDateTime dateTime = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    lblDate.setText("Date : " + dateTime.format(formatter));
+
+        modelCommande = new DefaultTableModel(
+            new Object[]{"Produit", "Prix", "Quantité", "Montant"}, 0
+        );
+
+        tableCommande.setModel(modelCommande);
+
+        comboProduit.addItem("Pizza - 2500");
+        comboProduit.addItem("Burger - 2000");
+        comboProduit.addItem("Jus - 1000");
     }
 
     /**
@@ -28,21 +57,160 @@ public class CommandeView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblNum = new javax.swing.JLabel();
+        lblDate = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableCommande = new javax.swing.JTable();
+        comboProduit = new javax.swing.JComboBox<>();
+        txtQuantite = new javax.swing.JTextField();
+        btnAjouter = new javax.swing.JButton();
+        btnValider = new javax.swing.JButton();
+        btnAnnuler = new javax.swing.JButton();
+        btnFermer = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lblNum.setText("Commande ");
+
+        lblDate.setText("Date :");
+
+        tableCommande.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Produit", "Prix", "Quantite", "Montant"
+            }
+        ));
+        jScrollPane1.setViewportView(tableCommande);
+
+        comboProduit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Produits" }));
+        comboProduit.setToolTipText("");
+        comboProduit.addActionListener(this::comboProduitActionPerformed);
+
+        btnAjouter.setText("Ajouter");
+        btnAjouter.addActionListener(this::btnAjouterActionPerformed);
+
+        btnValider.setText("Valider");
+        btnValider.addActionListener(this::btnValiderActionPerformed);
+
+        btnAnnuler.setText("Annuler");
+        btnAnnuler.addActionListener(this::btnAnnulerActionPerformed);
+
+        btnFermer.setText("Fermer");
+        btnFermer.addActionListener(this::btnFermerActionPerformed);
+
+        jTextField1.setText("Quantite :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAjouter)
+                    .addComponent(lblNum, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboProduit, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDate, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(btnValider)
+                        .addGap(38, 38, 38)
+                        .addComponent(btnAnnuler)
+                        .addGap(52, 52, 52)
+                        .addComponent(btnFermer))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnValider)
+                    .addComponent(btnAnnuler)
+                    .addComponent(btnFermer))
+                .addContainerGap(19, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(lblNum)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblDate)
+                .addGap(34, 34, 34)
+                .addComponent(comboProduit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtQuantite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addComponent(btnAjouter)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterActionPerformed
+        // TODO add your handling code here:
+        String produit = comboProduit.getSelectedItem().toString();
+        int quantite;
+
+        try {
+            quantite = Integer.parseInt(txtQuantite.getText());
+            if (quantite <= 0) throw new Exception();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Quantité invalide");
+            return;
+        }
+
+        String[] parts = produit.split("-");
+        String nom = parts[0].trim();
+        double prix = Double.parseDouble(parts[1].trim());
+
+        double montant = prix * quantite;
+
+        modelCommande.addRow(new Object[]{nom, prix, quantite, montant});
+        calculerTotal();
+        txtQuantite.setText("");
+    }//GEN-LAST:event_btnAjouterActionPerformed
+
+    private void btnValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnValiderActionPerformed
+        // TODO add your handling code here:
+        if (modelCommande.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Aucun produit dans la commande");
+            return;
+        }
+        JOptionPane.showMessageDialog(this, "Commande validée\nTotal : " + calculerTotal() + " FCFA");
+        this.dispose();
+    }//GEN-LAST:event_btnValiderActionPerformed
+
+    private void btnAnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnnulerActionPerformed
+        // TODO add your handling code here:
+        modelCommande.setRowCount(0);
+        calculerTotal();
+    }//GEN-LAST:event_btnAnnulerActionPerformed
+
+    private void btnFermerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFermerActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnFermerActionPerformed
+
+    private void comboProduitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboProduitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboProduitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -70,5 +238,31 @@ public class CommandeView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAjouter;
+    private javax.swing.JButton btnAnnuler;
+    private javax.swing.JButton btnFermer;
+    private javax.swing.JButton btnValider;
+    private javax.swing.JComboBox<String> comboProduit;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblDate;
+    private javax.swing.JLabel lblNum;
+    private javax.swing.JTable tableCommande;
+    private javax.swing.JTextField txtQuantite;
     // End of variables declaration//GEN-END:variables
+
+    private double calculerTotal() {
+        double somme = 0;
+
+        for (int i = 0; i < modelCommande.getRowCount(); i++) {
+            Object valeur = modelCommande.getValueAt(i, 3);
+
+            if (valeur instanceof Number number) {
+                somme += number.doubleValue();
+            }
+        }
+        return somme;
+    }
+
+    
 }
