@@ -15,13 +15,14 @@ public class LigneCommandeDAO {
             return false;
         }
         
-        String sql = "INSERT INTO LigneCommande (id_commande, id_produit, quantite, prixUnitaire) VALUES (?, ?, ?, ?)";
+        String sql = " INSERT INTO lignecommande (id_commande, id_produit, quantite, prixUnitaire, montantLigne) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
+            PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, ligne.getIdCommande());
             pst.setInt(2, ligne.getProduit().getId());
             pst.setInt(3, ligne.getQuantite());
             pst.setDouble(4, ligne.getPrixunitaire());
+            pst.setDouble(5, ligne.getMontantLigne());
             return pst.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -30,9 +31,9 @@ public class LigneCommandeDAO {
     }
     
     private boolean stockDisponible(int idProduit, int quantite) {
-        String sql = "SELECT stockActuel FROM Produit WHERE id=?";
+        String sql = "SELECT stockActuel FROM produit WHERE id=?";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
+            PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, idProduit);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
@@ -45,7 +46,7 @@ public class LigneCommandeDAO {
     }
     
     public boolean modifierQuantite(int idLigne, int nouvelleQuantite) {
-        String sql = "UPDATE LigneCommande SET quantite=? WHERE id=?";
+        String sql = "UPDATE lignecommande SET quantite=? WHERE id=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, nouvelleQuantite);
@@ -60,7 +61,7 @@ public class LigneCommandeDAO {
     // Récupérer toutes les lignes d'une commande spécifique
     public List<LigneCommande> listerParCommande(int idCommande) {
         List<LigneCommande> lignes = new ArrayList<>();
-        String sql = "SELECT lc.*, p.nom, p.prixVente FROM LigneCommande lc " +
+        String sql = "SELECT lc.*, p.nom, p.prixVente FROM lignecommande lc " +
                      "INNER JOIN Produit p ON lc.id_produit = p.id " +
                      "WHERE lc.id_commande = ?";
         
@@ -90,7 +91,7 @@ public class LigneCommandeDAO {
 
     // Supprimer une ligne
     public boolean supprimerLigne(int idLigne) {
-        String sql = "DELETE FROM LigneCommande WHERE id = ?";
+        String sql = "DELETE FROM lignecommande WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, idLigne);

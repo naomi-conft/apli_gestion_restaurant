@@ -3,6 +3,7 @@ package com.restaurant.views;
 import com.restaurant.dao.CommandeDAO;
 import com.restaurant.dao.LigneCommandeDAO;
 import com.restaurant.dao.ProduitDAO;
+import com.restaurant.entités.Commande;
 import com.restaurant.entités.Produit;
 import com.restaurant.entités.LigneCommande;
 import javax.swing.*;
@@ -34,9 +35,9 @@ public class CommandeView extends JFrame {
     private int commandeEnCours = 0;
     
     // DAO
-    private CommandeDAO commandeDAO;
-    private LigneCommandeDAO ligneCommandeDAO;
-    private ProduitDAO produitDAO;
+    private final CommandeDAO commandeDAO;
+    private final LigneCommandeDAO ligneCommandeDAO;
+    private final ProduitDAO produitDAO;
     
     public CommandeView() {
         commandeDAO = new CommandeDAO();
@@ -56,12 +57,13 @@ public class CommandeView extends JFrame {
         // Panel principal
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.setBackground(Color.getHSBColor(255,204,204));
         
         // Panel info commande (haut)
         JPanel panelInfo = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelInfo.setBorder(BorderFactory.createTitledBorder("Commande en cours"));
         lblEtat = new JLabel("Aucune commande en cours");
-        lblEtat.setFont(new Font("Arial", Font.BOLD, 14));
+        lblEtat.setFont(new Font("Times new Romain", Font.BOLD, 14));
         panelInfo.add(lblEtat);
         
         // Panel ajout produit
@@ -88,6 +90,8 @@ public class CommandeView extends JFrame {
         btnAjouterLigne = new JButton("Ajouter");
         btnAjouterLigne.addActionListener(e -> ajouterLigne());
         btnAjouterLigne.setEnabled(false);
+        btnAjouterLigne.setBackground(Color.getHSBColor(0,153,102));
+        btnAjouterLigne.setFont(new Font("Times new Romain", Font.PLAIN, 13));
         panelAjout.add(btnAjouterLigne, gbc);
         
         // Panel tableau
@@ -118,25 +122,35 @@ public class CommandeView extends JFrame {
         
         btnNouvelleCommande = new JButton("Nouvelle Commande");
         btnNouvelleCommande.addActionListener(e -> creerNouvelleCommande());
+        btnNouvelleCommande.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnNouvelleCommande.setBackground(Color.getHSBColor(0,153,102));
         panelBoutons.add(btnNouvelleCommande);
         
         btnSupprimerLigne = new JButton("Supprimer Ligne");
         btnSupprimerLigne.addActionListener(e -> supprimerLigne());
         btnSupprimerLigne.setEnabled(false);
+        btnSupprimerLigne.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnSupprimerLigne.setBackground(Color.getHSBColor(0,153,102));
         panelBoutons.add(btnSupprimerLigne);
         
         btnValiderCommande = new JButton("Valider Commande");
         btnValiderCommande.addActionListener(e -> validerCommande());
         btnValiderCommande.setEnabled(false);
+        btnValiderCommande.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnValiderCommande.setBackground(Color.getHSBColor(0,153,102));
         panelBoutons.add(btnValiderCommande);
         
         btnAnnulerCommande = new JButton("Annuler Commande");
         btnAnnulerCommande.addActionListener(e -> annulerCommande());
         btnAnnulerCommande.setEnabled(false);
+        btnAnnulerCommande.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnAnnulerCommande.setBackground(Color.getHSBColor(0,153,102));
         panelBoutons.add(btnAnnulerCommande);
         
         btnFermer = new JButton("Fermer");
         btnFermer.addActionListener(e -> dispose());
+        btnFermer.setFont(new Font("Times new Romain", Font.PLAIN, 14));
+        btnFermer.setBackground(Color.getHSBColor(0,153,102));
         panelBoutons.add(btnFermer);
         
         // Assembler
@@ -186,29 +200,41 @@ public class CommandeView extends JFrame {
         }
         
         try {
-            if (cmbProduit.getSelectedItem() == null) {
-                JOptionPane.showMessageDialog(this, "Sélectionnez un produit");
-                return;
-            }
-            
             Produit produit = (Produit) cmbProduit.getSelectedItem();
-            int quantite = Integer.parseInt(txtQuantite.getText().trim());
-            
-            if (quantite <= 0) {
-                JOptionPane.showMessageDialog(this, "Quantité doit être > 0");
-                return;
-            }
-            
-            // Vérifier le stock
-            if (produit.getStockActuel() < quantite) {
-                JOptionPane.showMessageDialog(this, 
-                    "Stock insuffisant !\nDisponible : " + produit.getStockActuel());
-                return;
-            }
-            
-            LigneCommande ligne = new LigneCommande(
-                0, commandeEnCours, produit, quantite, produit.getPrixVente()
-            );
+        if (produit == null) {
+            JOptionPane.showMessageDialog(this, "Sélectionnez un produit");
+            return;
+        }
+
+        int quantite = Integer.parseInt(txtQuantite.getText().trim());
+        if (quantite <= 0) {
+            JOptionPane.showMessageDialog(this, "Quantité invalide");
+            return;
+        }
+
+        if (produit.getStockActuel() < quantite) {
+            JOptionPane.showMessageDialog(this,
+                "Stock insuffisant\nDisponible : " + produit.getStockActuel());
+            return;
+        }
+
+        double prix = produit.getPrixVente();
+        double montant = prix * quantite;
+        
+        LigneCommande ligne = new LigneCommande(
+            0,
+            produit,
+            quantite,
+            produit.getPrixVente()
+        );
+
+        
+        ligne.setIdCommande(commandeEnCours);
+        ligne.setProduit(produit);
+        
+        ligne.setQuantite(quantite);
+        ligne.setPrixunitaire(prix);
+        ligne.setMontantligne(montant);
             
             if (ligneCommandeDAO.ajouter(ligne)) {
                 chargerLignes();

@@ -7,27 +7,31 @@ package com.restaurant.entités;
 public class LigneCommande {
     
     private int id;
-    private int idCommande;
+    private int idcommande;
     private Produit produit;
     private int quantite;
     private double prixUnitaire;
     private double montantLigne;
+
+    public double getMontantLigne() {
+        return prixUnitaire * quantite;
+    }
     
     // Constructeurs
     public LigneCommande() {
     }
     
-    public LigneCommande(int id, int idCommande, Produit produit, int quantite, double prixUnitaire) {
+    public LigneCommande(int id, int idcommande, Produit produit, int quantite, double prixUnitaire) {
         this.id = id;
-        this.idCommande = idCommande;
+        this.idcommande = idcommande;
         this.produit = produit;
         this.quantite = quantite;
         this.prixUnitaire = prixUnitaire;
         this.montantLigne = quantite * prixUnitaire;
     }
     
-    public LigneCommande(int idCommande, Produit produit, int quantite, double prixUnitaire) {
-        this.idCommande = idCommande;
+    public LigneCommande(int idcommande, Produit produit, int quantite, double prixUnitaire) {
+        this.idcommande = idcommande;
         this.produit = produit;
         this.quantite = quantite;
         this.prixUnitaire = prixUnitaire;
@@ -44,11 +48,11 @@ public class LigneCommande {
     }
     
     public int getIdCommande() {
-        return idCommande;
+        return idcommande;
     }
     
-    public void setIdCommande(int idCommande) {
-        this.idCommande = idCommande;
+    public void setIdCommande(int idcommande) {
+        this.idcommande = idcommande;
     }
     
     public Produit getProduit() {
@@ -109,4 +113,6 @@ public class LigneCommande {
     public int hashCode() {
         return Integer.hashCode(id);
     }
+
+    
 }

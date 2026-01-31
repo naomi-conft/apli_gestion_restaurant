@@ -15,8 +15,7 @@ public class Commande {
     private double total;
     
     // Constructeurs
-    public Commande() {
-    }
+    
     
     public Commande(int id, Timestamp dateCommande, String etat, double total) {
         this.id = id;

@@ -30,8 +30,8 @@ public class ProduitView extends JFrame {
     private JButton btnFermer;
     
     // DAO
-    private ProduitDAO produitDAO;
-    private CategorieDAO categorieDAO;
+    private final ProduitDAO produitDAO;
+    private final CategorieDAO categorieDAO;
     
     public ProduitView() {
         produitDAO = new ProduitDAO();
@@ -51,6 +51,7 @@ public class ProduitView extends JFrame {
         // Panel principal
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.setBackground(Color.getHSBColor(255,204,204));
         
         // Panel formulaire (gauche)
         JPanel panelFormulaire = new JPanel(new GridBagLayout());
@@ -97,18 +98,26 @@ public class ProduitView extends JFrame {
         // Boutons d'action
         JPanel panelBoutons = new JPanel(new GridLayout(4, 1, 5, 5));
         btnAjouter = new JButton("Ajouter");
+        btnAjouter.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnAjouter.setBackground(Color.getHSBColor(0,153,102));
         btnAjouter.addActionListener(e -> ajouterProduit());
         panelBoutons.add(btnAjouter);
         
         btnModifier = new JButton("Modifier");
+        btnModifier.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnModifier.setBackground(Color.getHSBColor(0,153,102));
         btnModifier.addActionListener(e -> modifierProduit());
         panelBoutons.add(btnModifier);
         
         btnSupprimer = new JButton("Supprimer");
+        btnSupprimer.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnSupprimer.setBackground(Color.getHSBColor(0,153,102));
         btnSupprimer.addActionListener(e -> supprimerProduit());
         panelBoutons.add(btnSupprimer);
         
         btnRafraichir = new JButton("Rafraîchir");
+        btnRafraichir.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnRafraichir.setBackground(Color.getHSBColor(0,153,102));
         btnRafraichir.addActionListener(e -> chargerProduits());
         panelBoutons.add(btnRafraichir);
         
@@ -141,7 +150,10 @@ public class ProduitView extends JFrame {
         
         // Bouton fermer
         JPanel panelFermer = new JPanel();
+        panelFermer.setBackground(Color.getHSBColor(255,204,204));
         btnFermer = new JButton("Fermer");
+        btnFermer.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnFermer.setBackground(Color.getHSBColor(0,153,102));
         btnFermer.addActionListener(e -> dispose());
         panelFermer.add(btnFermer);
         

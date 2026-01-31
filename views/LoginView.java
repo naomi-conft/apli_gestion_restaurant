@@ -2,9 +2,9 @@ package com.restaurant.views;
 
 import com.restaurant.dao.UtilisateurDAO;
 import com.restaurant.entités.Utilisateurs;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 /**
  * Écran de connexion - Code source pur
@@ -39,13 +39,13 @@ public class LoginView extends JFrame {
         // Panel principal
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
-        mainPanel.setBackground(Color.WHITE);
+        mainPanel.setBackground(Color.getHSBColor(255,204,204));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         
         // Titre
-        lblTitre = new JLabel("🍽️ GESTION RESTAURANT");
-        lblTitre.setFont(new Font("Arial", Font.BOLD, 20));
+        lblTitre = new JLabel("GESTION RESTAURANT");
+        lblTitre.setFont(new Font("Times new Roman", Font.BOLD, 20));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -54,6 +54,7 @@ public class LoginView extends JFrame {
         
         // Label Login
         lblLogin = new JLabel("Utilisateur :");
+        lblLogin.setFont(new Font("Times new Romain", Font.PLAIN, 14));
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
@@ -69,6 +70,7 @@ public class LoginView extends JFrame {
         
         // Label Password
         lblPassword = new JLabel("Mot de passe :");
+        lblPassword.setFont(new Font("Times new Romain", Font.PLAIN, 14));
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.EAST;
@@ -84,6 +86,9 @@ public class LoginView extends JFrame {
         // Bouton Connexion
         btnConnexion = new JButton("Se connecter");
         btnConnexion.addActionListener(e -> btnConnexionActionPerformed());
+        btnConnexion.setBackground(Color.getHSBColor(0,153,102));
+        btnConnexion.setFont(new Font("Times new Romain", Font.PLAIN, 14));
+        gbc.gridheight = 1;
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;

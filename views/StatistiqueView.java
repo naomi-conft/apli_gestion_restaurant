@@ -34,9 +34,9 @@ public class StatistiqueView extends JFrame {
     private JButton btnFermer;
     
     // DAO
-    private CommandeDAO commandeDAO;
-    private LigneCommandeDAO ligneCommandeDAO;
-    private ProduitDAO produitDAO;
+    private final CommandeDAO commandeDAO;
+    private final LigneCommandeDAO ligneCommandeDAO;
+    private final ProduitDAO produitDAO;
     
     public StatistiqueView() {
         commandeDAO = new CommandeDAO();
@@ -56,6 +56,7 @@ public class StatistiqueView extends JFrame {
         // Panel principal
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.setBackground(Color.getHSBColor(255,204,204));
         
         // Panel gauche (formulaires)
         JPanel panelGauche = new JPanel(new GridBagLayout());
@@ -79,6 +80,8 @@ public class StatistiqueView extends JFrame {
         gbcJour.gridx = 0; gbcJour.gridy = 1;
         gbcJour.gridwidth = 2;
         btnCalculerJour = new JButton("Calculer");
+        btnCalculerJour.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnCalculerJour.setBackground(Color.getHSBColor(0,153,102));
         btnCalculerJour.addActionListener(e -> calculerCAJour());
         panelJour.add(btnCalculerJour, gbcJour);
         
@@ -113,6 +116,8 @@ public class StatistiqueView extends JFrame {
         gbcPeriode.gridx = 0; gbcPeriode.gridy = 2;
         gbcPeriode.gridwidth = 2;
         btnCalculerPeriode = new JButton("Calculer");
+        btnCalculerPeriode.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnCalculerPeriode.setBackground(Color.getHSBColor(0,153,102));
         btnCalculerPeriode.addActionListener(e -> calculerCAPeriode());
         panelPeriode.add(btnCalculerPeriode, gbcPeriode);
         
@@ -127,10 +132,14 @@ public class StatistiqueView extends JFrame {
         // Boutons actions
         JPanel panelActions = new JPanel(new GridLayout(2, 1, 5, 5));
         btnTopProduits = new JButton("Top Produits");
+        btnTopProduits.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnTopProduits.setBackground(Color.getHSBColor(0,153,102));
         btnTopProduits.addActionListener(e -> afficherTopProduits());
         panelActions.add(btnTopProduits);
         
         btnAlertes = new JButton("Alertes Stock");
+        btnAlertes.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnAlertes.setBackground(Color.getHSBColor(0,153,102));
         btnAlertes.addActionListener(e -> afficherAlertes());
         panelActions.add(btnAlertes);
         
@@ -155,7 +164,10 @@ public class StatistiqueView extends JFrame {
         
         // Bouton fermer
         JPanel panelFermer = new JPanel();
+        panelFermer.setBackground(Color.getHSBColor(255,204,204));
         btnFermer = new JButton("Fermer");
+        btnFermer.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnFermer.setBackground(Color.getHSBColor(0,153,102));
         btnFermer.addActionListener(e -> dispose());
         panelFermer.add(btnFermer);
         

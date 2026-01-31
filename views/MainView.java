@@ -32,55 +32,61 @@ public class MainView extends JFrame {
         // Panel principal
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout(10, 10));
-        mainPanel.setBackground(new Color(245, 245, 245));
+        mainPanel.setBackground(Color.getHSBColor(255,204,204));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         // Panel titre
         JPanel panelTitre = new JPanel();
-        panelTitre.setBackground(new Color(245, 245, 245));
-        lblTitre = new JLabel("🍽️ GESTION RESTAURANT");
-        lblTitre.setFont(new Font("Arial", Font.BOLD, 24));
+        panelTitre.setBackground(Color.getHSBColor(255,204,204));
+        lblTitre = new JLabel("GESTION RESTAURANT");
+        lblTitre.setFont(new Font("Times new Romain", Font.BOLD, 24));
         lblTitre.setHorizontalAlignment(SwingConstants.CENTER);
         panelTitre.add(lblTitre);
         
         // Panel des boutons
         JPanel panelBoutons = new JPanel();
-        panelBoutons.setLayout(new GridLayout(4, 1, 10, 15));
-        panelBoutons.setBackground(new Color(245, 245, 245));
+        panelBoutons.setLayout(new GridLayout(2, 2, 15, 15));
+        panelBoutons.setBackground(Color.getHSBColor(255,204,204));
+        
         
         // Bouton Produits
         btnProduits = new JButton("📦 Gestion des Produits");
-        btnProduits.setFont(new Font("Arial", Font.BOLD, 16));
+        btnProduits.setFont(new Font("Times new Romain", Font.BOLD, 16));
+        btnProduits.setBackground(Color.getHSBColor(0,153,102));
         btnProduits.setPreferredSize(new Dimension(400, 60));
         btnProduits.addActionListener(e -> ouvrirProduits());
         panelBoutons.add(btnProduits);
         
         // Bouton Stock
         btnStock = new JButton("📊 Gestion du Stock");
-        btnStock.setFont(new Font("Arial", Font.BOLD, 16));
+        btnStock.setFont(new Font("Times new Romain", Font.BOLD, 16));
+        btnStock.setBackground(Color.getHSBColor(0,153,102));
         btnStock.setPreferredSize(new Dimension(400, 60));
         btnStock.addActionListener(e -> ouvrirStock());
         panelBoutons.add(btnStock);
         
         // Bouton Commandes
         btnCommandes = new JButton("🛒 Gestion des Commandes");
-        btnCommandes.setFont(new Font("Arial", Font.BOLD, 16));
+        btnCommandes.setFont(new Font("Times new Romain", Font.BOLD, 16));
+        btnCommandes.setBackground(Color.getHSBColor(0,153,102));
         btnCommandes.setPreferredSize(new Dimension(400, 60));
         btnCommandes.addActionListener(e -> ouvrirCommandes());
         panelBoutons.add(btnCommandes);
         
         // Bouton Statistiques
         btnStatistiques = new JButton("📈 Statistiques");
-        btnStatistiques.setFont(new Font("Arial", Font.BOLD, 16));
+        btnStatistiques.setFont(new Font("Times new Romain", Font.BOLD, 16));
+        btnStatistiques.setBackground(Color.getHSBColor(0,153,102));
         btnStatistiques.setPreferredSize(new Dimension(400, 60));
         btnStatistiques.addActionListener(e -> ouvrirStatistiques());
         panelBoutons.add(btnStatistiques);
         
         // Panel déconnexion
         JPanel panelDeconnexion = new JPanel();
-        panelDeconnexion.setBackground(new Color(245, 245, 245));
+        panelDeconnexion.setBackground(Color.getHSBColor(255,204,204));
         btnDeconnexion = new JButton("🚪 Déconnexion");
-        btnDeconnexion.setFont(new Font("Arial", Font.PLAIN, 14));
+        btnDeconnexion.setFont(new Font("Times new Romain", Font.PLAIN, 14));
+        btnDeconnexion.setBackground(Color.getHSBColor(0,153,102));
         btnDeconnexion.addActionListener(e -> deconnexion());
         panelDeconnexion.add(btnDeconnexion);
         

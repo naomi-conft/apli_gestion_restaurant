@@ -21,10 +21,10 @@ public class MouvementStockDAO {
             }
         }
         
-        String sqlMvt = "INSERT INTO MouvementStock (id_produit, type, quantite, motif) VALUES (?, ?, ?, ?)";
+        String sqlMvt = "INSERT INTO Mmouvementstock (id_produit, type, quantite, motif) VALUES (?, ?, ?, ?)";
         String sqlUpdateStock = (type.equals("ENTREE")) 
-            ? "UPDATE Produit SET stockActuel = stockActuel + ? WHERE id = ?"
-            : "UPDATE Produit SET stockActuel = stockActuel - ? WHERE id = ?";
+            ? "UPDATE produit SET stockActuel = stockActuel + ? WHERE id = ?"
+            : "UPDATE produit SET stockActuel = stockActuel - ? WHERE id = ?";
 
         Connection conn = null;
         try {
@@ -65,7 +65,7 @@ public class MouvementStockDAO {
     }
     
     private boolean stockDisponible(int idProduit, int quantite) {
-        String sql = "SELECT stockActuel FROM Produit WHERE id=?";
+        String sql = "SELECT stockActuel FROM produit WHERE id=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, idProduit);
@@ -81,7 +81,7 @@ public class MouvementStockDAO {
     
     public List<MouvementStock> listerTous() {
         List<MouvementStock> mouvements = new ArrayList<>();
-        String sql = "SELECT m.*, p.nom FROM MouvementStock m INNER JOIN Produit p ON m.id_produit = p.id ORDER BY m.dateMouvement DESC";
+        String sql = "SELECT m.*, p.nom FROM mouvementstock m INNER JOIN produit p ON m.id_produit = p.id ORDER BY m.dateMouvement DESC";
         
         try (Connection conn = DBConnection.getConnection();
              Statement st = conn.createStatement();
@@ -108,7 +108,7 @@ public class MouvementStockDAO {
     
     public List<MouvementStock> listerParProduit(int idProduit) {
         List<MouvementStock> mouvements = new ArrayList<>();
-        String sql = "SELECT * FROM MouvementStock WHERE id_produit=? ORDER BY dateMouvement DESC";
+        String sql = "SELECT * FROM mouvementstock WHERE id_produit=? ORDER BY dateMouvement DESC";
         
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {

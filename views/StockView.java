@@ -49,6 +49,7 @@ public class StockView extends JFrame {
         // Panel principal
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.setBackground(Color.getHSBColor(255,204,204));
         
         // Panel formulaire (haut)
         JPanel panelFormulaire = new JPanel(new GridBagLayout());
@@ -90,6 +91,8 @@ public class StockView extends JFrame {
         gbc.gridx = 0; gbc.gridy = 2;
         gbc.gridwidth = 4;
         btnEnregistrer = new JButton("Enregistrer le mouvement");
+        btnEnregistrer.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnEnregistrer.setBackground(Color.getHSBColor(0,153,102));
         btnEnregistrer.addActionListener(e -> enregistrerMouvement());
         panelFormulaire.add(btnEnregistrer, gbc);
         
@@ -111,15 +114,22 @@ public class StockView extends JFrame {
         
         // Panel boutons
         JPanel panelBoutons = new JPanel(new FlowLayout());
+        panelBoutons.setBackground(Color.getHSBColor(255,204,204));
         btnRafraichir = new JButton("Rafraîchir");
+        btnRafraichir.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnRafraichir.setBackground(Color.getHSBColor(0,153,102));
         btnRafraichir.addActionListener(e -> chargerMouvements());
         panelBoutons.add(btnRafraichir);
         
         btnAlertes = new JButton("Afficher Alertes");
+        btnAlertes.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnAlertes.setBackground(Color.getHSBColor(0,153,102));
         btnAlertes.addActionListener(e -> afficherAlertes());
         panelBoutons.add(btnAlertes);
         
         btnFermer = new JButton("Fermer");
+        btnFermer.setFont(new Font("Times new Romain", Font.PLAIN, 13));
+        btnFermer.setBackground(Color.getHSBColor(0,153,102));
         btnFermer.addActionListener(e -> dispose());
         panelBoutons.add(btnFermer);
         
