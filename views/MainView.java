@@ -15,6 +15,7 @@ public class MainView extends JFrame {
     private JButton btnCommandes;
     private JButton btnStatistiques;
     private JButton btnDeconnexion;
+    private JButton btnListeCommandes;
     private JLabel lblTitre;
     
     public MainView() {
@@ -33,7 +34,7 @@ public class MainView extends JFrame {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout(10, 10));
         mainPanel.setBackground(Color.getHSBColor(255,204,204));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
         
         // Panel titre
         JPanel panelTitre = new JPanel();
@@ -45,7 +46,7 @@ public class MainView extends JFrame {
         
         // Panel des boutons
         JPanel panelBoutons = new JPanel();
-        panelBoutons.setLayout(new GridLayout(2, 2, 15, 15));
+        panelBoutons.setLayout(new GridLayout(3, 2, 10, 10));
         panelBoutons.setBackground(Color.getHSBColor(255,204,204));
         
         
@@ -73,6 +74,14 @@ public class MainView extends JFrame {
         btnCommandes.addActionListener(e -> ouvrirCommandes());
         panelBoutons.add(btnCommandes);
         
+        // Bouton ListeCommande
+        btnListeCommandes = new JButton("📋 Liste des Commandes");
+        btnListeCommandes.setFont(new Font("Times new Romain", Font.BOLD, 16));
+        btnListeCommandes.setBackground(Color.getHSBColor(0,153,102));
+        btnListeCommandes.setPreferredSize(new Dimension(400, 60));
+        btnListeCommandes.addActionListener(e -> ouvrirListeCommandes());
+        panelBoutons.add(btnListeCommandes);
+
         // Bouton Statistiques
         btnStatistiques = new JButton("📈 Statistiques");
         btnStatistiques.setFont(new Font("Times new Romain", Font.BOLD, 16));
@@ -80,6 +89,7 @@ public class MainView extends JFrame {
         btnStatistiques.setPreferredSize(new Dimension(400, 60));
         btnStatistiques.addActionListener(e -> ouvrirStatistiques());
         panelBoutons.add(btnStatistiques);
+        
         
         // Panel déconnexion
         JPanel panelDeconnexion = new JPanel();
@@ -117,6 +127,12 @@ public class MainView extends JFrame {
         StatistiqueView statistiqueView = new StatistiqueView();
         statistiqueView.setVisible(true);
     }
+    
+    // Ajoute cette méthode
+        private void ouvrirListeCommandes() {
+            ListeCommandeView listeView = new ListeCommandeView();
+            listeView.setVisible(true);
+        }
     
     private void deconnexion() {
         int choix = JOptionPane.showConfirmDialog(this, 

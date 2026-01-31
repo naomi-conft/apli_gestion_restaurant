@@ -82,6 +82,27 @@ public class CommandeDAO {
             return false;
         }
     }
+    /**
+     * Changer l'état d'une commande
+     * @param id ID de la commande
+     * @param nouvelEtat Le nouvel état (EN_COURS, VALIDEE, ANNULEE)
+     * @return true si succès
+     */
+    public boolean changerEtat(int id, String nouvelEtat) {
+        String sql = "UPDATE Commande SET etat = ? WHERE id = ?";
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            
+            pst.setString(1, nouvelEtat);
+            pst.setInt(2, id);
+            return pst.executeUpdate() > 0;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     
     public boolean mettreAJourTotal(int idCommande) {
         String sql = "UPDATE Commande SET total = (SELECT COALESCE(SUM(montantLigne), 0) FROM LigneCommande WHERE id_commande=?) WHERE id=?";
@@ -137,6 +158,27 @@ public class CommandeDAO {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    /**
+     * Supprimer une commande
+     * @param id ID de la commande
+     * @return true si succès
+     */
+    public boolean supprimer(int id) {
+        // Les lignes seront supprimées automatiquement grâce à ON DELETE CASCADE
+        String sql = "DELETE FROM Commande WHERE id = ?";
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            
+            pst.setInt(1, id);
+            return pst.executeUpdate() > 0;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     // Méthode pour les statistiques

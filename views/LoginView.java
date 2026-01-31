@@ -21,7 +21,7 @@ public class LoginView extends JFrame {
     private JLabel lblTitre;
     
     // DAO
-    private UtilisateurDAO utilisateurDAO;
+    private final UtilisateurDAO utilisateurDAO;
     
     public LoginView() {
         utilisateurDAO = new UtilisateurDAO();
