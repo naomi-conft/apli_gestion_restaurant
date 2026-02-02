@@ -21,7 +21,7 @@ public class MouvementStockDAO {
             }
         }
         
-        String sqlMvt = "INSERT INTO Mmouvementstock (id_produit, type, quantite, motif) VALUES (?, ?, ?, ?)";
+        String sqlMvt = "INSERT INTO mouvementstock (id_produit, type_mouvement, quantite, motif) VALUES (?, ?, ?, ?)";
         String sqlUpdateStock = (type.equals("ENTREE")) 
             ? "UPDATE produit SET stockActuel = stockActuel + ? WHERE id = ?"
             : "UPDATE produit SET stockActuel = stockActuel - ? WHERE id = ?";
@@ -93,7 +93,7 @@ public class MouvementStockDAO {
                 MouvementStock mvt = new MouvementStock(
                     rs.getInt("id"),
                     p,
-                    rs.getString("type"),
+                    rs.getString("type_mouvement"),
                     rs.getInt("quantite"),
                     rs.getTimestamp("dateMouvement"),
                     rs.getString("motif")
@@ -121,7 +121,7 @@ public class MouvementStockDAO {
                 MouvementStock mvt = new MouvementStock(
                     rs.getInt("id"),
                     p,
-                    rs.getString("type"),
+                    rs.getString("type_mouvement"),
                     rs.getInt("quantite"),
                     rs.getTimestamp("dateMouvement"),
                     rs.getString("motif")

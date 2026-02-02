@@ -28,8 +28,8 @@ public class StockView extends JFrame {
     private JButton btnFermer;
     
     // DAO
-    private MouvementStockDAO mouvementDAO;
-    private ProduitDAO produitDAO;
+    private final MouvementStockDAO mouvementDAO;
+    private final ProduitDAO produitDAO;
     
     public StockView() {
         mouvementDAO = new MouvementStockDAO();
