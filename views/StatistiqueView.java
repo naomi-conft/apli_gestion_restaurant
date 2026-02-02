@@ -151,7 +151,7 @@ public class StatistiqueView extends JFrame {
         panelTableau.setBorder(BorderFactory.createTitledBorder("Résultats"));
         
         modelStats = new DefaultTableModel(
-            new String[]{"Produit", "Quantité vendue", "Stock", "Seuil", "État"}, 0
+            new String[]{"Produit", "Quantité vendue", "Stock restant", "Seuil", "État"}, 0
         ) {
             @Override
             public boolean isCellEditable(int row, int column) {
