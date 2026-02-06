@@ -448,17 +448,25 @@ public class ListeCommandeView extends JFrame {
             
             details.append("══════════════════════════════════════════════════════════════════════════════════s\n");
             
-            JTextArea textArea = new JTextArea(details.toString());
-            textArea.setEditable(false);
-            textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+            // JTextArea et JScrollPane remplacés par DetailsCommandeDialog
+            // JTextArea textArea = new JTextArea(details.toString());
+            // ...
+
             
-            JScrollPane scrollPane = new JScrollPane(textArea);
-            scrollPane.setPreferredSize(new Dimension(500, 400));
-            
+            /* 
             JOptionPane.showMessageDialog(this,
                 scrollPane,
                 "Détails Commande #" + commandeSelectionnee,
                 JOptionPane.INFORMATION_MESSAGE);
+            */
+            
+            // Utilisation du nouveau dialogue avec bouton d'impression
+            DetailsCommandeDialog dialog = new DetailsCommandeDialog(
+                this, 
+                "Détails Commande #" + commandeSelectionnee, 
+                details.toString()
+            );
+            dialog.setVisible(true);
             
         } catch (Exception e) {
             e.printStackTrace();
